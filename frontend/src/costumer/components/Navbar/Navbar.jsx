@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react';
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import logo from './logo.png'
 const navigation = {
   categories: [
     {
@@ -297,15 +298,15 @@ export default function Navbar() {
                 <a href="#">
                   <span className="sr-only">Your Company</span>
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    className="h-14 w-auto"
+                    src={logo}
                     alt=""
                   />
                 </a>
               </div>
 
               {/* Flyout menus */}
-              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
+              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
@@ -415,17 +416,6 @@ export default function Navbar() {
                   </a>
                 </div>
 
-                <div className="hidden lg:ml-8 lg:flex">
-                  <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-sm font-medium">CAD</span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div>
 
                 {/* Search */}
                 <div className="flex lg:ml-6">

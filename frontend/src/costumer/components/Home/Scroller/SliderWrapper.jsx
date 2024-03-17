@@ -1,61 +1,87 @@
 import React from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import { sliderdata } from "./sliderdata";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ScrollCard from "./ScrollCard";
-import { Button } from "@mui/material";
-const responsive = {
-  0: { items: 1 },
-  720: { items: 3 },
-  1024: { items: 5 },
-};
-const SliderWrapper = () => {
-  const items = sliderdata.map((item) => (
-    <ScrollCard imgSrc={item.image} alt={item.alt} />
-  ));
 
+const SliderWrapper = ({sectionheader}) => {
+  const imgDrag = {
+    WebkitUserDrag: "none",
+    KhtmlUserDrag: "none",
+    MozUserDrag: "none",
+    OUserDrag: "none",
+    userDrag: "none",
+    userSelect: "none",
+  };
   return (
-    <div className="border">
-      <div className="relative p-5">
-        <AliceCarousel
-          items={items}
-          disableButtonsControls
-          responsive={responsive}
-          infinite
-          disableDotsControls
-        />
-        <Button
-          className="z-20"
-          variant="contained"
-          sx={{
-            position: "absolute",
-            top: "8rem",
-            right: "0rem",
-            transform: "translateX(50%) rotate(90deg)",
-            bgcolor: "white",
-          }}
-        >
-          <KeyboardArrowLeftIcon
-            sx={{ transform: "rotate(90deg)", color: "black" }}
+    <div style={imgDrag}>
+      <h2 className="text-2xl font-medium ms-5 mb-3">{sectionheader}</h2>
+      <Carousel
+        additionalTransfrom={0}
+        arrows
+        autoPlaySpeed={3000}
+        centerMode={false}
+        className=""
+        containerClass="container"
+        dotListClass=""
+        draggable
+        focusOnSelect={false}
+        infinite={false}
+        itemClass=""
+        keyBoardControl
+        minimumTouchDrag={80}
+        pauseOnHover
+        renderArrowsWhenDisabled={false}
+        renderButtonGroupOutside={false}
+        renderDotsOutside={false}
+        responsive={{
+          desktop: {
+            breakpoint: {
+              max: 3000,
+              min: 1024,
+            },
+            items: 5,
+            partialVisibilityGutter: 40,
+            centerMode: true, 
+
+          },
+          mobile: {
+            breakpoint: {
+              max: 464,
+              min: 0,
+            },
+            items: 1,
+            partialVisibilityGutter: 30,
+            centerMode: true, 
+          },
+          tablet: {
+            breakpoint: {
+              max: 1024,
+              min: 464,
+            },
+            items: 2,
+            partialVisibilityGutter: 30,
+            centerMode: true, 
+
+          },
+        }}
+        rewind={false}
+        rewindWithAnimation={false}
+        rtl={false}
+        shouldResetAutoplay
+        showDots={false}
+        sliderClass=""
+        slidesToSlide={1}
+        swipeable
+      >
+        {sliderdata.map((item, index) => (
+          <ScrollCard
+            key={item.id || index}
+            imgSrc={item.image}
+            alt={item.alt}
           />
-        </Button>
-        <Button
-          className="z-20"
-          variant="contained"
-          sx={{
-            position: "absolute",
-            top: "8rem",
-            left: "0rem",
-            transform: "translateX(-50%) rotate(90deg)",
-            bgcolor: "white",
-          }}
-        >
-          <KeyboardArrowLeftIcon
-            sx={{ transform: "rotate(-90deg)", color: "black" }}
-          />
-        </Button>
-      </div>
+        ))}
+      </Carousel>
     </div>
   );
 };
