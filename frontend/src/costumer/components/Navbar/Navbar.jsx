@@ -8,7 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import logo from "./logo.png";
 import AccountMenu from "./AccountMenu";
-import { Button } from "@mui/material";
+import { Button, MenuList } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 import { navigation } from "./NavigationData";
 
 function classNames(...classes) {
@@ -128,7 +129,6 @@ export default function Navbar() {
                               {section.name}
                             </p>
                             <ul
-                              role="list"
                               aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
                               className="mt-6 flex flex-col space-y-6"
                             >
@@ -164,36 +164,26 @@ export default function Navbar() {
                 </div>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-200 px-4 py-6">
-                  <a href="#" className="-m-2 flex items-center p-2">
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-base font-medium text-gray-900">
-                      CAD
-                    </span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
+                  {login ? (
+                    <div>
+                      <MenuList>
+                        <MenuItem>Profile</MenuItem>
+                        <MenuItem>My account</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      </MenuList>
+                    </div>
+                  ) : (
+                    <div className="flow-root">
+                      <Button
+                        className="-m-2 block p-2 font-medium text-gray-900"
+                        onClick={(e) => {
+                          setLogin(true);
+                        }}
+                      >
+                        Sign in
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -224,10 +214,10 @@ export default function Navbar() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
+                <Button>
                   <span className="sr-only">Your Company</span>
                   <img className="h-14 w-auto" src={logo} alt="" />
-                </a>
+                </Button>
               </div>
 
               {/* Flyout menus */}
@@ -311,7 +301,6 @@ export default function Navbar() {
                                             {section.name}
                                           </p>
                                           <ul
-                                            role="list"
                                             aria-labelledby={`${section.name}-heading`}
                                             className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                           >
@@ -359,7 +348,13 @@ export default function Navbar() {
                   {login ? (
                     <AccountMenu onLogout={handleLogout} />
                   ) : (
-                    <Button size="medium" className="text-sm font-medium text-gray-700 hover:text-gray-800" onClick={(e)=>{setLogin(true)}}>
+                    <Button
+                      size="medium"
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      onClick={(e) => {
+                        setLogin(true);
+                      }}
+                    >
                       Sign in
                     </Button>
                   )}
