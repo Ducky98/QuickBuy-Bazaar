@@ -15,7 +15,7 @@ const SliderWrapper = ({sectionheader}) => {
   };
   return (
     <div style={imgDrag}>
-      <h2 className="text-2xl font-medium ms-5 mb-3">{sectionheader}</h2>
+      <h2 className="text-2xl font-medium ps-5 mb-3">{sectionheader}</h2>
       <Carousel
         additionalTransfrom={0}
         arrows

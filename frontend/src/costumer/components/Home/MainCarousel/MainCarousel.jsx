@@ -8,7 +8,7 @@ import { MainCarouselData } from './MainCarouselData';
 const MainCarousel = () => {
     const items = MainCarouselData.map((item) => <div className='p-1'><img className='cursor-pointer object-fill w-full' src={item.image} alt=''/></div>);
     return (
-        <div>
+        <div className='max-w-[1920px] mx-auto'>
         <AliceCarousel
             items={items}
             disableButtonsControls

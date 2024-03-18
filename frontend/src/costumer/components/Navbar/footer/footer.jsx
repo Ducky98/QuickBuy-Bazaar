@@ -9,15 +9,15 @@ import {
 const sections = [
   {
     title: "Solutions",
-    items: ["Marketing", "Analytics", "Commerce", "Data", "Cloud"],
+    items: ["Return", "Discounts", "Saler", "Replace", "Account"],
   },
   {
     title: "Support",
-    items: ["Pricing", "Documentation", "Guides", "API Status"],
+    items: ["Return & Replace", "Discounts"],
   },
   {
     title: "Company",
-    items: ["About", "Blog", "Jobs", "Press", "Partners"],
+    items: ["About", "Blog", "Jobs", "Partners"],
   },
   {
     title: "Legal",
@@ -52,7 +52,7 @@ const Footer = () => {
         <div className="col-span-2 pt-8 md:pt-2">
           <p className="font-bold uppercase">Subscribe to our newsletter</p>
           <p className="py-4">
-            The latest news, articles, and resources, sent to your inbox weekly.
+            The latest news about product and deals, sent to your inbox weekly.
           </p>
           <form className="flex flex-col sm:flex-row">
             <input
@@ -66,7 +66,7 @@ const Footer = () => {
       </div>
 
       <div className="flex flex-col max-w-[1240px] px-2 py-4 mx-auto justify-between sm:flex-row text-center text-gray-500">
-        <p className="py-4">2024, LLC. All rights reserved</p>
+        <p className="py-4">2024, QuickBuy. All rights reserved</p>
         <div className="flex justify-between sm:w-[300px] pt-4 text-2xl">
           {items.map((item, index) => (
             <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" className="hover:text-white cursor-pointer">
