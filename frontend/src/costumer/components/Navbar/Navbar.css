@@ -1,7 +1,0 @@
-/* Add this CSS to your stylesheets */
-/* Customize the focus outline for the Tab component */
-.tab:focus {
-  outline: none; /* Remove the default focus outline */
-  /* Add any custom styles for the focus outline */
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2); /* Example: Add a 2px black outline */
-}

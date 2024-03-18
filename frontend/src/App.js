@@ -2,26 +2,25 @@ import './App.css';
 import Navbar from './costumer/components/Navbar/Navbar';
 import Home from './costumer/components/pages/Home';
 import Footer from './costumer/components/Navbar/footer/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-/**
- * App Component
- * This is the root component of the application.
- * It renders the Navbar, Home page, and Footer.
- */
 function App() {
   return (
-    <div className="">
-      {/* Navbar */}
-      <Navbar/>
+    <Router>
+      <div className="">
+        {/* Navbar */}
+        <Navbar />
 
-      {/* Home Page */}
-      <div>
-        <Home/>
+        {/* Routes */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          
+        </Routes>
+
+        {/* Footer */}
+        <Footer />
       </div>
-      
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Router>
   );
 }
 

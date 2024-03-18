@@ -6,6 +6,7 @@ import AccountMenu from "./AccountMenu"; // Importing AccountMenu component
 import { Button, MenuList } from "@mui/material"; // Importing Button and MenuList components from MUI
 import MenuItem from "@mui/material/MenuItem"; // Importing MenuItem component from MUI
 import { navigation } from "./NavigationData"; // Importing navigation data
+import { Link } from "react-router-dom";
 
 // Utility function to join classes conditionally
 function classNames(...classes) {
@@ -226,10 +227,10 @@ export default function Navbar() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <Button>
-                  <span className="sr-only">Your Company</span>
+                <Link to="/">
+                  <span className="sr-only">Quick Buy</span>
                   <img className="h-14 w-auto" src={logo} alt="" />
-                </Button>
+                </Link>
               </div>
 
               {/* Desktop navigation */}
