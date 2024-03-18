@@ -24,7 +24,7 @@ const sections = [
     items: ["Claims", "Privacy", "Terms", "Policies", "Conditions"],
   },
 ];
-
+// Links
 const items = [
   { name: "Facebook", icon: FaFacebook, link: "https://www.facebook.com/" },
   { name: "Instagram", icon: FaInstagram, link: "https://www.instagram.com/" },

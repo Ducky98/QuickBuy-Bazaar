@@ -1,34 +1,34 @@
 import { Fragment, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import logo from "./logo.png";
-import AccountMenu from "./AccountMenu";
-import { Button, MenuList } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import { navigation } from "./NavigationData";
+import { Dialog, Popover, Tab, Transition } from "@headlessui/react"; // Importing components from Headless UI
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"; // Importing icons
+import logo from "./logo.png"; // Importing logo
+import AccountMenu from "./AccountMenu"; // Importing AccountMenu component
+import { Button, MenuList } from "@mui/material"; // Importing Button and MenuList components from MUI
+import MenuItem from "@mui/material/MenuItem"; // Importing MenuItem component from MUI
+import { navigation } from "./NavigationData"; // Importing navigation data
 
+// Utility function to join classes conditionally
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+// Navbar component
 export default function Navbar() {
-  const [login, setLogin] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [login, setLogin] = useState(true); // State for login status
+  const [open, setOpen] = useState(false); // State for mobile menu open status
 
+  // Function to handle logout
   const handleLogout = () => {
     setLogin(false); // Update login state
-    // Any other logout logic you might have
+
   };
+
   return (
     <div className="bg-white">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+          {/* Overlay */}
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -41,6 +41,7 @@ export default function Navbar() {
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
+          {/* Mobile menu content */}
           <div className="fixed inset-0 z-40 flex">
             <Transition.Child
               as={Fragment}
@@ -52,6 +53,7 @@ export default function Navbar() {
               leaveTo="-translate-x-full"
             >
               <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                {/* Close button */}
                 <div className="flex px-4 pb-2 pt-5">
                   <button
                     type="button"
@@ -64,7 +66,7 @@ export default function Navbar() {
                   </button>
                 </div>
 
-                {/* Links */}
+                {/* Navigation tabs */}
                 <Tab.Group as="div" className="mt-2">
                   <div className="border-b border-gray-200">
                     <Tab.List className="-mb-px flex space-x-8 px-4">
@@ -91,6 +93,7 @@ export default function Navbar() {
                         key={category.name}
                         className="space-y-10 px-4 pb-8 pt-10"
                       >
+                        {/* Featured items */}
                         <div className="grid grid-cols-2 gap-x-4">
                           {category.featured.map((item) => (
                             <div
@@ -120,6 +123,7 @@ export default function Navbar() {
                             </div>
                           ))}
                         </div>
+                        {/* Sections */}
                         {category.sections.map((section) => (
                           <div key={section.name}>
                             <p
@@ -150,6 +154,7 @@ export default function Navbar() {
                   </Tab.Panels>
                 </Tab.Group>
 
+                {/* Pages */}
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
@@ -163,8 +168,10 @@ export default function Navbar() {
                   ))}
                 </div>
 
+                {/* Account */}
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   {login ? (
+                    // Logged in
                     <div>
                       <MenuList>
                         <MenuItem>Profile</MenuItem>
@@ -173,6 +180,7 @@ export default function Navbar() {
                       </MenuList>
                     </div>
                   ) : (
+                    // Not logged in
                     <div className="flow-root">
                       <Button
                         className="-m-2 block p-2 font-medium text-gray-900"
@@ -191,17 +199,21 @@ export default function Navbar() {
         </Dialog>
       </Transition.Root>
 
+      {/* Header */}
       <header className="relative bg-white">
+        {/* Delivery message */}
         <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
           Get free delivery on orders over ₹8000
         </p>
 
+        {/* Navigation */}
         <nav
           aria-label="Top"
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         >
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
+              {/* Mobile menu button */}
               <button
                 type="button"
                 className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
@@ -220,14 +232,16 @@ export default function Navbar() {
                 </Button>
               </div>
 
-              {/* Flyout menus */}
+              {/* Desktop navigation */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
                 <div className="flex h-full space-x-8">
+                  {/* Categories */}
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
                       {({ open }) => (
                         <>
                           <div className="relative flex">
+                            {/* Category button */}
                             <Popover.Button
                               className={classNames(
                                 open
@@ -240,6 +254,7 @@ export default function Navbar() {
                             </Popover.Button>
                           </div>
 
+                          {/* Category dropdown */}
                           <Transition
                             as={Fragment}
                             enter="transition ease-out duration-200"
@@ -250,15 +265,16 @@ export default function Navbar() {
                             leaveTo="opacity-0"
                           >
                             <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
-                              {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+                              {/* Shadow */}
                               <div
                                 className="absolute inset-0 top-1/2 bg-white shadow"
                                 aria-hidden="true"
                               />
-
+                              {/* Dropdown content */}
                               <div className="relative bg-white">
                                 <div className="mx-auto max-w-7xl px-8">
                                   <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
+                                    {/* Featured items */}
                                     <div className="col-start-2 grid grid-cols-2 gap-x-8">
                                       {category.featured.map((item) => (
                                         <div
@@ -291,6 +307,7 @@ export default function Navbar() {
                                         </div>
                                       ))}
                                     </div>
+                                    {/* Sections */}
                                     <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
                                       {category.sections.map((section) => (
                                         <div key={section.name}>
@@ -331,6 +348,7 @@ export default function Navbar() {
                     </Popover>
                   ))}
 
+                  {/* Pages */}
                   {navigation.pages.map((page) => (
                     <a
                       key={page.name}
@@ -343,11 +361,14 @@ export default function Navbar() {
                 </div>
               </Popover.Group>
 
+              {/* Account and actions */}
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  {/* Account menu */}
                   {login ? (
                     <AccountMenu onLogout={handleLogout} />
                   ) : (
+                    // Sign in button
                     <Button
                       size="medium"
                       className="text-sm font-medium text-gray-700 hover:text-gray-800"

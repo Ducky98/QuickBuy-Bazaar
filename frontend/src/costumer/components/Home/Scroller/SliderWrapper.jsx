@@ -1,10 +1,12 @@
 import React from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { sliderdata } from "./sliderdata";
-import ScrollCard from "./ScrollCard";
+import Carousel from "react-multi-carousel"; // Importing Carousel component
+import "react-multi-carousel/lib/styles.css"; // Importing styles for Carousel
+import { sliderdata } from "./sliderdata"; // Importing data for the slider items
+import ScrollCard from "./ScrollCard"; // Importing ScrollCard component
 
-const SliderWrapper = ({sectionheader}) => {
+// Component for wrapping a carousel/slider with a section header
+const SliderWrapper = ({ sectionheader }) => {
+  // Stop images from dragging
   const imgDrag = {
     WebkitUserDrag: "none",
     KhtmlUserDrag: "none",
@@ -13,9 +15,12 @@ const SliderWrapper = ({sectionheader}) => {
     userDrag: "none",
     userSelect: "none",
   };
+
   return (
     <div style={imgDrag}>
+      {/* Section header */}
       <h2 className="text-2xl font-medium ps-5 mb-3">{sectionheader}</h2>
+      {/* Carousel component */}
       <Carousel
         additionalTransfrom={0}
         arrows
@@ -42,8 +47,7 @@ const SliderWrapper = ({sectionheader}) => {
             },
             items: 5,
             partialVisibilityGutter: 40,
-            centerMode: true, 
-
+            centerMode: true,
           },
           mobile: {
             breakpoint: {
@@ -52,7 +56,7 @@ const SliderWrapper = ({sectionheader}) => {
             },
             items: 1,
             partialVisibilityGutter: 30,
-            centerMode: true, 
+            centerMode: true,
           },
           tablet: {
             breakpoint: {
@@ -61,8 +65,7 @@ const SliderWrapper = ({sectionheader}) => {
             },
             items: 2,
             partialVisibilityGutter: 30,
-            centerMode: true, 
-
+            centerMode: true,
           },
         }}
         rewind={false}
@@ -74,11 +77,12 @@ const SliderWrapper = ({sectionheader}) => {
         slidesToSlide={1}
         swipeable
       >
+        {/* Mapping slider data to ScrollCard components */}
         {sliderdata.map((item, index) => (
           <ScrollCard
-            key={item.id || index}
-            imgSrc={item.image}
-            alt={item.alt}
+            key={item.id || index} // Unique key for each item
+            imgSrc={item.image} // Image source
+            alt={item.alt} // Alt text for the image
           />
         ))}
       </Carousel>
@@ -86,4 +90,4 @@ const SliderWrapper = ({sectionheader}) => {
   );
 };
 
-export default SliderWrapper;
+export default SliderWrapper; // Exporting SliderWrapper component
