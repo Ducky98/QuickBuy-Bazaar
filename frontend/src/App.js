@@ -4,6 +4,9 @@ import Home from './costumer/components/pages/Home';
 import Footer from './costumer/components/Navbar/footer/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Products from './costumer/components/pages/Products';
+import ProductOverview from './costumer/components/Product/ProductOverview/ProductOverview';
+import ProductWrapper from './costumer/components/Product/ProductOverview/ProductWrapper';
+import Cart from './costumer/components/Product/cart/cart';
 
 function App() {
   return (
@@ -14,7 +17,7 @@ function App() {
 
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Cart />} />
           <Route path="/products" element={<Products />} />
         </Routes>
 
