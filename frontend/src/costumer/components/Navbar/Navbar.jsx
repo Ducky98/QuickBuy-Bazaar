@@ -1,13 +1,18 @@
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react"; // Importing components from Headless UI
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"; // Importing icons
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline"; // Importing icons
 import logo from "./logo.png"; // Importing logo
 import AccountMenu from "./AccountMenu"; // Importing AccountMenu component
-import { Button, MenuList } from "@mui/material"; // Importing Button and MenuList components from MUI
+import { Avatar, Button, Menu, MenuList } from "@mui/material"; // Importing Button and MenuList components from MUI
 import MenuItem from "@mui/material/MenuItem"; // Importing MenuItem component from MUI
 import { navigation } from "./NavigationData"; // Importing navigation data
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { deepPurple } from "@mui/material/colors";
 // Utility function to join classes conditionally
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,17 +20,37 @@ function classNames(...classes) {
 
 // Navbar component
 export default function Navbar() {
+  const [anchorEl, setAnchorEl] = useState(null);
   const [login, setLogin] = useState(true); // State for login status
+  const [openAuthModel, setOpenAuthModel] = useState(false);
   const [open, setOpen] = useState(false); // State for mobile menu open status
+  const navigate = useNavigate();
+  const openUserMenu = Boolean(anchorEl);
+  const jwt = localStorage.getItem("jwt");
 
   // Function to handle logout
   const handleLogout = () => {
     setLogin(false); // Update login state
-
+  };
+  const handleUserClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseUserMenu = (event) => {
+    setAnchorEl(null);
+  };
+  const handleOpen = () => {
+    setOpenAuthModel(true);
+  };
+  const handleClose = () => {
+    setOpenAuthModel(false);
+  };
+  const handleCategoryClick = (category, section, item, close) => {
+    navigate(`/${category.id}/${section.id}/${item.id}`);
+    close();
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white pb-10">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -171,13 +196,13 @@ export default function Navbar() {
 
                 {/* Account */}
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  {login ? (
+                  {true ? (
                     // Logged in
                     <div>
                       <MenuList>
                         <MenuItem>Profile</MenuItem>
                         <MenuItem>My account</MenuItem>
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem>Logout</MenuItem>
                       </MenuList>
                     </div>
                   ) : (
@@ -185,9 +210,6 @@ export default function Navbar() {
                     <div className="flow-root">
                       <Button
                         className="-m-2 block p-2 font-medium text-gray-900"
-                        onClick={(e) => {
-                          setLogin(true);
-                        }}
                       >
                         Sign in
                       </Button>
@@ -239,7 +261,7 @@ export default function Navbar() {
                   {/* Categories */}
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
-                      {({ open }) => (
+                      {({ open, close }) => (
                         <>
                           <div className="relative flex">
                             {/* Category button */}
@@ -327,12 +349,19 @@ export default function Navbar() {
                                                 key={item.name}
                                                 className="flex"
                                               >
-                                                <a
-                                                  href={item.href}
-                                                  className="hover:text-gray-800"
+                                                <p
+                                                  onClick={() =>
+                                                    handleCategoryClick(
+                                                      category,
+                                                      section,
+                                                      item,
+                                                      close
+                                                    )
+                                                  }
+                                                  className="cursor-pointer hover:text-gray-800"
                                                 >
                                                   {item.name}
-                                                </a>
+                                                </p>
                                               </li>
                                             ))}
                                           </ul>
@@ -366,18 +395,45 @@ export default function Navbar() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {/* Account menu */}
-                  {login ? (
-                    <AccountMenu onLogout={handleLogout} />
+                  {true ? (
+                    <div>
+                      <Avatar
+                        className="text-white"
+                        onClick={handleUserClick}
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        // onClick={handleUserClick}
+                        sx={{
+                          bgcolor: deepPurple[500],
+                          color: "white",
+                          cursor: "pointer",
+                        }}
+                      >
+                        R
+                      </Avatar>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl} // Correct the prop name
+                        open={openUserMenu}
+                        onClose={handleCloseUserMenu}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button", // Remove space before aria-labelledby
+                        }}
+                      >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          Profile
+                        </MenuItem>
+                        <MenuItem onClick={()=> navigate("account/order")}>My Orders</MenuItem>
+                        <MenuItem>Logout</MenuItem>
+                      </Menu>
+                    </div>
                   ) : (
-                    // Sign in button
                     <Button
-                      size="medium"
+                      onClick={handleOpen}
                       className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                      onClick={(e) => {
-                        setLogin(true);
-                      }}
                     >
-                      Sign in
+                      Signin
                     </Button>
                   )}
                 </div>
@@ -401,7 +457,7 @@ export default function Navbar() {
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
+                      2
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>

@@ -1,8 +1,14 @@
 import React from "react";
 import CartItems from "./CartItems";
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
+  const handleCheckOut = ()=>{
+    navigate('/checkout?step=3')
+  }
+
   return (
     <div className="p-10 grid grid-cols-4 lg:gap-x-16 gap-y-3">
       <div className=" lg:col-span-3 col-span-4 space-y-2">
@@ -45,7 +51,7 @@ const Cart = () => {
           </div>
           <small>Use <b>QuickBuy20</b></small>
 
-          <Button className=" w-full" sx={{bgcolor: "purple"}} variant="contained">
+          <Button onClick={handleCheckOut} className=" w-full" sx={{bgcolor: "purple"}} variant="contained">
               Check Out
             </Button>
         </div>

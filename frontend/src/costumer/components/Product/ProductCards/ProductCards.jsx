@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCards = ({ product }) => {
+  const navigate = useNavigate();
   return (
-    <div key={product.id} className="group relative border p-1 my-2 w-[15rem]">
+    <div key={product.id} className="group relative border p-1 my-2 w-[15rem]" onClick={()=>navigate(`/product/${10}`)}>
       <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         {product.discount ? (
           <div className="absolute top-2 left-0 bg-pink-800 rounded-full text-xs text-white p-1">

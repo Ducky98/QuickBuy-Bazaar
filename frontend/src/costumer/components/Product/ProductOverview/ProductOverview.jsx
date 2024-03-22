@@ -3,6 +3,7 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useNavigate } from "react-router-dom";
 
 const product = {
   name: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum amet unde molestias.",
@@ -80,24 +81,9 @@ export default function ProductOverview() {
       }
     }
   };
+  const navigate = useNavigate();
   const handleCartSubmit = () => {
-    if (selectedSize) {
-      // Add selected product to cart with count
-      console.log("Product added to cart:", selectedSize, "Quantity:", count);
-    } else {
-      // Handle case when no size is selected
-      console.error("Please select a size before adding to cart");
-    }
-  };
-
-  const handleBuySubmit = () => {
-    if (selectedSize) {
-      // Proceed with buy action for selected product with count
-      console.log("Product bought:", selectedSize, "Quantity:", count);
-    } else {
-      // Handle case when no size is selected
-      console.error("Please select a size before buying");
-    }
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -343,11 +329,11 @@ export default function ProductOverview() {
             <h2 className="sr-only">Product information</h2>
             {product.delFreeAmt <= count ? (
               <div className="text-3xl tracking-tight text-gray-900 font-amazon-ember">
-                ₹{product.price*count}
+                ₹{product.price * count}
                 {product.shipPrice ? (
                   <>
                     <del className="block text-gray-600 text-base mt-2">
-                      ₹{product.shipPrice*count} Delivery & Packaging
+                      ₹{product.shipPrice * count} Delivery & Packaging
                     </del>
                     <div className="text-white bg-green-700 px-2 text-sm ms-3 py-1 w-fit">
                       Free Delivery
@@ -359,10 +345,10 @@ export default function ProductOverview() {
               </div>
             ) : (
               <div className="text-3xl tracking-tight text-gray-900 font-amazon-ember">
-                ₹{(product.price + product.shipPrice)*count}
+                ₹{(product.price + product.shipPrice) * count}
                 {product.shipPrice ? (
                   <div className="text-gray-600 text-base mt-2">
-                    ₹{product.shipPrice*count} Delivery & Packaging (included)
+                    ₹{product.shipPrice * count} Delivery & Packaging (included)
                   </div>
                 ) : (
                   <></>
@@ -403,20 +389,14 @@ export default function ProductOverview() {
             ) : (
               ""
             )}
-          <div>
-        <button
-          onClick={handleCartSubmit}
-          className="mx-2 my-3 p-1 bg-indigo-600 w-full rounded-lg text-white hover:bg-indigo-800"
-        >
-          Add to Cart
-        </button>
-        <button
-          onClick={handleBuySubmit}
-          className="mx-2 my-3 p-1 bg-purple-600 w-full rounded-lg text-white hover:bg-purple-800"
-        >
-          Buy Now
-        </button>
-      </div>
+            <div>
+              <button
+                onClick={handleCartSubmit}
+                className="mx-2 my-3 p-3 bg-indigo-600 w-full rounded-lg text-white hover:bg-indigo-800 "
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </section>
       </div>
