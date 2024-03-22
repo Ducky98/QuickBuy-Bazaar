@@ -1,10 +1,14 @@
-import React from "react";
-import CartItems from "./CartItems";
-import { Button, TextField } from "@mui/material";
+import React from 'react'
+import AddressCard from "../../AddressCard/AddressCard";
+import CartItems from '../cart/CartItems';
+import { Button, TextField } from '@mui/material';
 
-const Cart = () => {
+const OrderSummery = () => {
   return (
-    <div className="p-10 grid grid-cols-4 lg:gap-x-16 gap-y-3">
+    <div>
+      <div className="p-5 shadow-lg rounded-s-md border">
+        <AddressCard/>
+        <div className="p-10 grid grid-cols-4 lg:gap-x-16 gap-y-3">
       <div className=" lg:col-span-3 col-span-4 space-y-2">
         <h2 className="text-xl font-bold font-amazon-ember">Cart Item</h2>
 
@@ -51,7 +55,9 @@ const Cart = () => {
         </div>
       </div>
     </div>
-  );
-};
+      </div>
+    </div>
+  )
+}
 
-export default Cart;
+export default OrderSummery
