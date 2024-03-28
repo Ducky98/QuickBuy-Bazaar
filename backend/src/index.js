@@ -1,18 +1,19 @@
 const express = require("express");
-
 const cors = require("cors");
-
 const app = express();
 
-app.use(express.json);
+// Call express.json() middleware with parentheses
+app.use(express.json());
+
+// Call cors() middleware with parentheses
 app.use(cors());
 
+// Import and use auth route
+const authRoutes = require('./routes/auth.route');
+app.use("/auth", authRoutes);
 
-const authRouters = require('./routes/auth.route');
-app.use("/auth", authRouters);
-
+// Import and use user route
 const userRoutes = require('./routes/user.route');
 app.use('/user', userRoutes);
-
 
 module.exports = app;

@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
     ],
     reviews:[
         {
-            type:mongoose.Schema.Type.ObjectId,
+            type:mongoose.Schema.Types.ObjectId,
             ref:"reviews"
         }
     ],

@@ -1,7 +1,7 @@
 const userService = require("../services/user.service")
 const jwtVerifier = require("../config/jwtVerifier")
 const bcrypt = require("bcrypt");
-const cartService = require('../services/card.service')
+const cartService = require('../services/cart.service')
 const register = async (req, res) => {
     try {
         const user = await userService.createUser(req.body);
