@@ -1,4 +1,5 @@
 const Category = require("../models/category.model");
+import { products } from './../../../frontend/src/costumer/components/Product/ProductCards/Productdata';
 const Product = require("../models/product.model");
 
 
@@ -116,5 +117,20 @@ async function getAllProducts(reqQuery){
 
     const totalPages = Math.ceil(totalProducts/pageSize);
 
-    return
+    return {content: products, currrentPage: pageNumber, totalPages}
+}
+
+async function createMultipleProduct(products){
+    for(let product of products){
+        await createProduct(product);
+    }
+}
+
+module.exports = {
+    createProduct,
+    deleteProduct,
+    updateProduct,
+    getAllProducts,
+    findProductById,
+    createMultipleProduct
 }
