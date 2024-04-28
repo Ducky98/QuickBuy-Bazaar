@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderScherma = new Schema({
+const orderScherma = new mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
@@ -9,7 +9,7 @@ const orderScherma = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'orderItems',
     }],
-    orderData:{
+    orderDate:{
         type: Date,
         require: true,
         default: Date.now()

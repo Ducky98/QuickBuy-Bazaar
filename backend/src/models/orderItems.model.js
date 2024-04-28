@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const orderItemsScherma = new Schema({
+const orderItemsScherma = new mongoose.Schema({
     product:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'products',
@@ -17,7 +17,7 @@ const orderItemsScherma = new Schema({
         type: Number,
         required: true
     },
-    discountPrice:{
+    discountedPrice:{
         type:Number,
         required:true
     },
@@ -28,6 +28,6 @@ const orderItemsScherma = new Schema({
     },
 });
 
-const OrderItems = mongoose.model('orderItems', orderItemsScherma);
+const OrderItem = mongoose.model('orderItems', orderItemsScherma);
 
-module.exports = OrderItems;
+module.exports = OrderItem;

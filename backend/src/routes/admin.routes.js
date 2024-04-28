@@ -11,10 +11,10 @@ router.use(authenticate);
 router.get("/", adminOrderController.getAllOrders);
 
 // Routes for updating order status
-router.put("/:orderId/confirmed", adminOrderController.updateOrderStatus);
-router.put("/:orderId/shipped", adminOrderController.updateOrderStatus);
-router.put("/:orderId/delivered", adminOrderController.updateOrderStatus);
-router.put("/:orderId/cancelled", adminOrderController.updateOrderStatus);
-router.put("/:orderId/delete", adminOrderController.updateOrderStatus);
+router.put("/:orderId/confirmed", adminOrderController.confirmedOrders);
+router.put("/:orderId/shipped", adminOrderController.shippOrders);
+router.put("/:orderId/delivered", adminOrderController.deliverOrders);
+router.put("/:orderId/cancelled", adminOrderController.cancelledOrders);
+router.put("/:orderId/delete", adminOrderController.deleteOrders);
 
 module.exports = router;

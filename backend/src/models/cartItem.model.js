@@ -6,13 +6,17 @@ const cartItemSchema = new mongoose.Schema({
         ref: "cart",
         required: true
     },
-    product:[{
+    userId:{
+        type: String,
+        required: true
+    },
+    product:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'products',
         required: true
-    }],
+    },
     size:{
-        type: Number,
+        type: String,
         required: true,
     },
     quantity:{
@@ -23,6 +27,10 @@ const cartItemSchema = new mongoose.Schema({
     price:{
         type:Number,
         require: true,
+    },
+    discountedPrice:{
+        type: Number,
+        require: true
     }
 });
 

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react"; // Importing components from Headless UI
 import {
   Bars3Icon,
@@ -7,12 +7,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline"; // Importing icons
 import logo from "./logo.png"; // Importing logo
-import AccountMenu from "./AccountMenu"; // Importing AccountMenu component
 import { Avatar, Button, Menu, MenuList } from "@mui/material"; // Importing Button and MenuList components from MUI
 import MenuItem from "@mui/material/MenuItem"; // Importing MenuItem component from MUI
 import { navigation } from "./NavigationData"; // Importing navigation data
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { deepPurple } from "@mui/material/colors";
+import AuthModel from "../../Auth/AuthModel";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, Logout } from "../../../Redux/Auth/Action";
+import { store } from './../../../Redux/store';
 // Utility function to join classes conditionally
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,16 +24,19 @@ function classNames(...classes) {
 // Navbar component
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [login, setLogin] = useState(true); // State for login status
   const [openAuthModel, setOpenAuthModel] = useState(false);
   const [open, setOpen] = useState(false); // State for mobile menu open status
   const navigate = useNavigate();
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem("jwt");
-
+  const { auth } = useSelector((store) => store); // Access auth state from Redux store
+  const dispatch = useDispatch();
+  const location = useLocation()
   // Function to handle logout
   const handleLogout = () => {
-    setLogin(false); // Update login state
+    dispatch(Logout());
+    handleCloseUserMenu();
+
   };
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,7 +54,22 @@ export default function Navbar() {
     navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
   };
+  // Effect to fetch user data if JWT exists or changes
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt)); // Dispatch getUser action
+    }
+  }, [jwt, auth.jwt]);
 
+  useEffect(() => {
+    if(auth.user){
+      handleClose()
+    }
+    if(location.pathname==="/login" || localStorage.pathname==="/register"){
+      navigate(-1)
+    }
+  }, [auth.user])
+  
   return (
     <div className="bg-white pb-10">
       {/* Mobile menu */}
@@ -196,19 +217,20 @@ export default function Navbar() {
 
                 {/* Account */}
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  {true ? (
+                  {false ? (
                     // Logged in
                     <div>
                       <MenuList>
                         <MenuItem>Profile</MenuItem>
                         <MenuItem>My account</MenuItem>
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </MenuList>
                     </div>
                   ) : (
                     // Not logged in
                     <div className="flow-root">
                       <Button
+                        onClick={handleOpen}
                         className="-m-2 block p-2 font-medium text-gray-900"
                       >
                         Sign in
@@ -395,7 +417,7 @@ export default function Navbar() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {/* Account menu */}
-                  {true ? (
+                  {auth.user?.firstName ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -410,7 +432,7 @@ export default function Navbar() {
                           cursor: "pointer",
                         }}
                       >
-                        R
+                        {auth.user.firstName[0].toUpperCase()}
                       </Avatar>
                       <Menu
                         id="basic-menu"
@@ -425,7 +447,7 @@ export default function Navbar() {
                           Profile
                         </MenuItem>
                         <MenuItem onClick={()=> navigate("account/order")}>My Orders</MenuItem>
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (
@@ -433,12 +455,12 @@ export default function Navbar() {
                       onClick={handleOpen}
                       className="text-sm font-medium text-gray-700 hover:text-gray-800"
                     >
-                      Signin
+                      Sign in
                     </Button>
                   )}
                 </div>
 
-                {/* Search */}
+                {/* Search
                 <div className="flex lg:ml-6">
                   <p className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
@@ -447,7 +469,7 @@ export default function Navbar() {
                       aria-hidden="true"
                     />
                   </p>
-                </div>
+                </div> */}
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
@@ -467,6 +489,7 @@ export default function Navbar() {
           </div>
         </nav>
       </header>
+      <AuthModel handleClose={handleClose} open={openAuthModel}/>
     </div>
   );
 }

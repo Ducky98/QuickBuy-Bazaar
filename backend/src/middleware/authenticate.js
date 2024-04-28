@@ -16,7 +16,6 @@ const authenticate = async (req, res, next) => {
         }
 
         req.user = user; // Attach user object to the request for use in subsequent middleware or routes
-
     } catch (error) {
         return res.status(500).send({ error: error.message }); // Handle internal server error
     }

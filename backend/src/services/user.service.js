@@ -4,8 +4,8 @@ const jwtVerifier = require("../config/jwtVerifier")
 const createUser = async (userData) => {
     try {
         let { firstName, lastName, email, password } = userData;
-        const isUserExixst = await User.findOne({ email });
-        if (isUserExixst) {
+        const isUserExist = await User.findOne({ email });
+        if (isUserExist) {
             throw new Error("User Already Exist with Email: ", email);
         }
         password = await bcrypt.hash(password, 10);

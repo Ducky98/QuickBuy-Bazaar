@@ -1,5 +1,6 @@
 const Address = require('../models/address.model');
 const Order = require('../models/order.model');
+const OrderItem = require('../models/orderItems.model');
 const OrderItems = require('../models/orderItems.model');
 const cartService = require('../services/cart.service');
 
@@ -13,35 +14,36 @@ async function createOrder(user, shippAddress) {
         address.user = user;
         await address.save();
 
-        user.addresses.push(address);
+        user.address.push(address);
         await user.save();
     }
     const cart = await cartService.findUserCart(user._id);
     const orderItems = [];
     for (const item of cart.cartItems) {
-        const orderItem = new OrderItems({
-            price: item.price,
+        const orderItem = new OrderItem({
             product: item.product,
+            userId: item.userId,
+            price: item.price,
             quantity: item.quantity,
-            size: item.userId,
+            size: item.size,
             discountedPrice: item.discountedPrice,
         })
         const createdOrderItem = await orderItem.save();
-        orderItem.push(createdOrderItem)
-
+        orderItems.push(createdOrderItem)
+        
     }
-
+    const discountPercentage = Math.round(((cart.totalPrice - cart.discount) / cart.totalPrice) * 100);
+    
     const createdOrder = new Order({
         user,
         orderItems,
         totalPrice: cart.totalPrice,
-        totalDiscountedPrice: cart.totalDiscountedPrice,
-        discount: cart.discount,
+        totalDiscountPrice: cart.discount,
+        discount: discountPercentage,
         totalItem: cart.totalItem,
         shippAddress: address,
     })
-
-    const savedOrder = await createOrder.save();
+    const savedOrder = await createdOrder.save();
     return savedOrder;
 }
 

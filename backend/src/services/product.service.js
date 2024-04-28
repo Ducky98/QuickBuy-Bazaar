@@ -1,5 +1,4 @@
 const Category = require("../models/category.model");
-import { products } from './../../../frontend/src/costumer/components/Product/ProductCards/Productdata';
 const Product = require("../models/product.model");
 
 
@@ -10,6 +9,7 @@ async function createProduct(reqData) {
             name: reqData.topLevelCategory,
             level: 1
         })
+        await topLevel.save();
     }
     let secondLevel = await Category.findOne({
         name: reqData.secondLevelCategory,
@@ -22,6 +22,7 @@ async function createProduct(reqData) {
             parentCategory: topLevel._id,
             level: 2
         })
+        await secondLevel.save();
     }
     let thirdLevel = await Category.findOne({
         name: reqData.thirdLevelCategory,
@@ -33,31 +34,29 @@ async function createProduct(reqData) {
             parentCategory: secondLevel._id,
             level: 3
         })
+        await thirdLevel.save();
     }
-
+    
     const product = new Product({
         title: reqData.title,
         description: reqData.description,
         discountedPrice: reqData.discountedPrice,
-        discountPersent: reqData.discountPersent,
         imageUrl:reqData.imageUrl,
         price: reqData.price,
-        sized:reqData.size,
-        quantity: reqData.quantity,
+        sizes:reqData.sizes,
         category:thirdLevel._id,
     })
     return await product.save();
 }
 
 async function deleteProduct(productId){
-    const product = await findProductById(productId);
 
     await Product.findByIdAndDelete(productId);
     return "Product deleted Succeddfully";
 }
 
 async function updateProduct(productId, reqData){
-    const updateProduct = await Product.findByIdAndUpdate(productId, reqData);
+    await Product.findByIdAndUpdate(productId, reqData);
 
 }
 async function findProductById(id){
@@ -68,57 +67,57 @@ async function findProductById(id){
     }
     return product;
 }
-async function getAllProducts(reqQuery){
-    let {category, sizes, minPrice, maxPrice, minDiscount, sort, stock, pageNumber, pageSize } = reqQuery;
-    
+async function getAllProducts(reqQuery) {
+    let { category, sizes, minPrice, maxPrice, minDiscount, sort, stock, pageNumber, pageSize } = reqQuery;
+
     pageSize = pageSize || 10;
 
-    let query = Product.find().populate("catergory");
+    let query = Product.find().populate("category");
 
-    if(catergory){
-        const existCategory = await Category.findOne({name: category});
-        if(existCategory){
-            query = query.where("cetegory").equals(existCategory._id);
-        }else{
-            return {content: [], currentPage:1, totalPages:0}
+    if (category) {
+        const existCategory = await Category.findOne({ name: category });
+        if (existCategory) {
+            query = query.where("category").equals(existCategory._id);
+        } else {
+            return { content: [], currentPage: 1, totalPages: 0 };
         }
     }
-    if(sizes){
+    if (sizes) {
         const sizesSet = new Set(sizes);
-        query.query.where("sizes.name").in([...sizesSet]);
-
+        query = query.where("sizes.name").in([...sizesSet]);
     }
-    if(minPrice && maxPrice){
-        query = query.where('dicountedPrice').gt(minPrice).lte(maxPrice);
+    if (minPrice && maxPrice) {
+        query = query.where('discountedPrice').gt(minPrice).lte(maxPrice);
     }
-    if(minDiscount){
+    if (minDiscount) {
         query = query.where("discountPersent").gt(minDiscount);
     }
-    if(stock){
-        if(stock==='in_stock'){
-            query = (await query.where("quantity")).gt(0);
-        }else if(stock=='out_of_stock'){
-            query = query.where(quantity).gt(1);
+    if (stock) {
+        if (stock === 'in_stock') {
+            query = query.where("quantity").gt(0);
+        } else if (stock === 'out_of_stock') {
+            query = query.where("quantity").lte(0);
         }
     }
 
-    if(sort){
-        const sortDirection = sort === 'price_hight'?-1:1;
-        query = query.sort({discountedPrice: sortDirection})
+    if (sort) {
+        const sortDirection = sort === 'price_high' ? -1 : 1;
+        query = query.sort({ discountedPrice: sortDirection });
     }
 
     const totalProducts = await Product.countDocuments(query);
 
-    const skip = (pageNumber-1)*pageSize;
+    const skip = (pageNumber - 1) * pageSize;
 
     query = query.skip(skip).limit(pageSize);
 
     const products = await query.exec();
 
-    const totalPages = Math.ceil(totalProducts/pageSize);
+    const totalPages = Math.ceil(totalProducts / pageSize);
 
-    return {content: products, currrentPage: pageNumber, totalPages}
+    return { content: products, currentPage: pageNumber, totalPages };
 }
+
 
 async function createMultipleProduct(products){
     for(let product of products){

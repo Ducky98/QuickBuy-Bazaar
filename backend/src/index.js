@@ -45,7 +45,7 @@ const ratingRoutes = require('./routes/rating.routes');
 app.use("/api/ratings", ratingRoutes);
 
 // Import and use admin order-related routes
-const adminOrderRoutes = require('./routes/adminOrder.routes');
+const adminOrderRoutes = require('./routes/admin.routes');
 app.use("/api/admin/orders", adminOrderRoutes);
 
 module.exports = app;

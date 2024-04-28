@@ -15,13 +15,6 @@ const productSchema = new mongoose.Schema({
     discountedPrice: {
         type: Number,
     },
-    discountPersent: {
-        type: Number,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-    },
     sizes:[{
         name:{type:String},
         quantity:{type:Number}

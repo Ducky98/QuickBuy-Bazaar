@@ -10,7 +10,6 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/*" element={<CustomerRoutes />} />
-          
         </Routes>
 
       </div>

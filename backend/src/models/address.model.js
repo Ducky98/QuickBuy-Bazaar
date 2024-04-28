@@ -30,7 +30,7 @@ const AddressSchema = new mongoose.Schema({
         ref: "users"
     },
     mobile:{
-        type: String,
+        type: Number,
         required: true,
     }
 })
